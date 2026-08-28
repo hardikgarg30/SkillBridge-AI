@@ -99,7 +99,7 @@ It combines a React + Vite frontend, FastAPI backend, SQLAlchemy persistence, JW
 │ Roadmaps                     │
 │ Learning Plans               │
 │ Resumes / Progress Data      │
-└──────────────┘
+└──────────────────────────────┘
 
                │
                │ AI Inference
@@ -150,32 +150,9 @@ SKILLBRIDGE-AI/
 │   ├── app/
 │   │   ├── database/
 │   │   │   └── database.py
-│   │   │
 │   │   ├── models/
-│   │   │   ├── __init__.py
-│   │   │   ├── user.py
-│   │   │   ├── assessment.py
-│   │   │   ├── roadmap.py
-│   │   │   ├── learning_plan.py
-│   │   │   ├── resume.py
-│   │   │   └── progress.py
-│   │   │
 │   │   ├── routes/
-│   │   │   ├── auth.py
-│   │   │   ├── assessment.py
-│   │   │   ├── roadmap.py
-│   │   │   ├── learning_plan.py
-│   │   │   ├── resume.py
-│   │   │   ├── practice_questions.py
-│   │   │   ├── company_roles.py
-│   │   │   └── progress.py
-│   │   │
 │   │   ├── services/
-│   │   │   ├── ai_service.py
-│   │   │   ├── skill_analyzer.py
-│   │   │   ├── resume_analyzer.py
-│   │   │   └── practice_questions.py
-│   │   │
 │   │   └── main.py
 │   │
 │   ├── requirements.txt
@@ -218,6 +195,8 @@ Frontend:
 
 http://localhost:5176
 
+If Vite selects another available port such as 5173, 5174, or 5175, use the URL printed in the terminal.
+
 🔐 Environment Variables
 
 Create:
@@ -228,6 +207,7 @@ Example:
 
 HF_API_KEY=your_huggingface_api_key
 
+Never commit your real API key to GitHub.
 
 Use .env.example as the safe configuration template.
 
@@ -527,8 +507,6 @@ GET  /api/progress/
 FastAPI Swagger documentation:
 
 http://127.0.0.1:8000/docs
-
-
 🗺️ AI Decision Flow
 Student Profile
       ↓
@@ -577,9 +555,11 @@ http://127.0.0.1:8000/
 API Docs:
 http://127.0.0.1:8000/docs
 
+If the selected frontend port is already in use, Vite may automatically choose another available port.
 
 ☁️ Deployment
 
+Recommended production architecture:
 
 React + Vite Frontend
           ↓
@@ -602,7 +582,6 @@ Production database configuration
 Restricted CORS
 Strong authentication secrets
 Production-ready logging and monitoring
-
 🎯 Why SkillBridge AI?
 
 Career preparation is often fragmented across different tools.
@@ -644,7 +623,6 @@ Where are your gaps?
 How well did you perform?
         ↓
 What should you learn next?
-
 📌 Project Highlights
 
 AI-Powered: Hugging Face + Llama-based career intelligence
@@ -701,7 +679,6 @@ AI Company Role Matching: Complete
 Progress Tracking: Complete
 GitHub Repository: Complete
 Live Deployment: Next Step
-
 👨‍💻 Author
 
 Hardik Garg
