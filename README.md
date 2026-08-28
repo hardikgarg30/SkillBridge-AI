@@ -108,8 +108,11 @@ It combines a React + Vite frontend, FastAPI backend, SQLAlchemy persistence, JW
 │   Hugging Face Inference API │
 │       Llama 3.1 8B Instruct  │
 └──────────────────────────────┘
+```
 
 ## 📁 Project Structure
+
+```text
 SKILLBRIDGE-AI/
 ├── client/
 │   ├── public/
@@ -152,8 +155,27 @@ SKILLBRIDGE-AI/
 │   │   ├── database/
 │   │   │   └── database.py
 │   │   ├── models/
+│   │   │   ├── __init__.py
+│   │   │   ├── user.py
+│   │   │   ├── assessment.py
+│   │   │   ├── roadmap.py
+│   │   │   ├── learning_plan.py
+│   │   │   ├── resume.py
+│   │   │   └── progress.py
 │   │   ├── routes/
+│   │   │   ├── auth.py
+│   │   │   ├── assessment.py
+│   │   │   ├── roadmap.py
+│   │   │   ├── learning_plan.py
+│   │   │   ├── resume.py
+│   │   │   ├── practice_questions.py
+│   │   │   ├── company_roles.py
+│   │   │   └── progress.py
 │   │   ├── services/
+│   │   │   ├── ai_service.py
+│   │   │   ├── skill_analyzer.py
+│   │   │   ├── resume_analyzer.py
+│   │   │   └── practice_questions.py
 │   │   └── main.py
 │   │
 │   ├── requirements.txt
@@ -162,62 +184,69 @@ SKILLBRIDGE-AI/
 ├── .gitignore
 ├── .env.example
 └── README.md
+```
 
+## 🚀 Run Locally
 
-🚀 Run Locally
-Requirements
-Windows 10/11
-Python 3.10+
-Node.js
-npm
-Git
-Hugging Face API key
-Backend
-cd server
-python -m venv venv
-.\venv\Scripts\Activate.ps1
-pip install -r requirements.txt
-uvicorn app.main:app --reload --port 8000
+### Requirements
+
+- Windows 10/11
+- Python 3.10+
+- Node.js
+- npm
+- Git
+- Hugging Face API key
+
+### Backend
+```
 
 Backend:
 
+```text
 http://127.0.0.1:8000
+```
 
 FastAPI documentation:
 
+```text
 http://127.0.0.1:8000/docs
-Frontend
+```
 
-Open a second terminal:
+### Frontend
 
-cd client
-npm install
-npm run dev
+```
 
 Frontend:
 
+```text
 http://localhost:5176
+```
 
 
-🔐 Environment Variables
+## 🔐 Environment Variables
 
 Create:
 
+```text
 server/.env
+```
 
 Example:
 
+```env
 HF_API_KEY=your_huggingface_api_key
+```
 
 
-Use .env.example as the safe configuration template.
+Use `.env.example` as the safe configuration template.
 
 For production deployments, store secrets in the hosting platform's environment-variable settings.
 
-🔄 Core User Workflow
+## 🔄 Core User Workflow
 
 A typical SkillBridge AI workflow is:
 
+```text
 User Registration
        ↓
 User Login
@@ -243,15 +272,17 @@ Practice Questions
 Progress Tracking
        ↓
 Student Profile
+```
 
 Resume analysis can be used as an additional entry point to understand the learner's existing career profile.
 
-🎯 Adaptive AI Mock Test
+## 🎯 Adaptive AI Mock Test
 
 The mock-test system is designed to generate questions dynamically rather than relying on one fixed question bank.
 
 The generated test can use:
 
+```text
 Career Goal
       +
 Experience Level
@@ -261,9 +292,11 @@ Technical Skills
 Skill Gaps
       ↓
 AI-Generated Questions
+```
 
-Examples:
+### Sales Manager
 
+```text
 Career Goal: Sales Manager
 
 Relevant focus:
@@ -273,6 +306,11 @@ Lead Generation
 Negotiation
 Sales Strategy
 Forecasting
+```
+
+### Data Analyst
+
+```text
 Career Goal: Data Analyst
 
 Relevant focus:
@@ -282,6 +320,11 @@ Excel
 Power BI
 Data Analysis
 Statistics
+```
+
+### Cloud Engineer
+
+```text
 Career Goal: Cloud Engineer
 
 Relevant focus:
@@ -290,6 +333,11 @@ Linux
 Docker
 Kubernetes
 Cloud Infrastructure
+```
+
+### Cybersecurity Analyst
+
+```text
 Career Goal: Cybersecurity Analyst
 
 Relevant focus:
@@ -299,13 +347,15 @@ Network Security
 Threat Detection
 Packet Analysis
 Incident Response
+```
 
 The system is designed to avoid unrelated generic questions when a more role-specific topic is appropriate.
 
-🧠 AI Personalization
+## 🧠 AI Personalization
 
 SkillBridge AI uses multiple inputs to personalize the learner's experience.
 
+```text
 Career Goal
      +
 Experience Level
@@ -317,49 +367,54 @@ Skill Gaps
 Mock Test Performance
      ↓
 Personalized Learning Experience
+```
 
 The same platform can therefore generate different learning paths for different users.
 
-📈 Mock Test → Roadmap
+## 📈 Mock Test → Roadmap
 
 Mock-test performance can influence the generated career roadmap.
 
-Lower Performance
+### Lower Performance
 
 The roadmap can prioritize:
 
-Fundamentals
-Weak areas
-Core concepts
-Additional practice
-Moderate Performance
+- Fundamentals
+- Weak areas
+- Core concepts
+- Additional practice
+
+### Moderate Performance
 
 The roadmap can balance:
 
-Fundamentals
-Intermediate concepts
-Practical projects
-Strong Performance
+- Fundamentals
+- Intermediate concepts
+- Practical projects
+
+### Strong Performance
 
 The roadmap can progress toward:
 
-Advanced concepts
-Real-world projects
-Interview preparation
-Job readiness
-📚 AI Learning Plan
+- Advanced concepts
+- Real-world projects
+- Interview preparation
+- Job readiness
+
+## 📚 AI Learning Plan
 
 The learning-plan system creates a structured seven-day learning schedule.
 
 Each day can include:
 
-Target skill
-Topics
-Practical tasks
-Estimated learning hours
+- Target skill
+- Topics
+- Practical tasks
+- Estimated learning hours
 
 Example:
 
+```text
 Day 1
 ↓
 Fundamentals
@@ -387,15 +442,17 @@ Project Work
 Day 7
 ↓
 Review + Practice
+```
 
 The actual content is generated according to the learner's career goal and skill gaps.
 
-💡 Personalized Practice Questions
+## 💡 Personalized Practice Questions
 
 The practice-question module allows the learner to enter a custom career goal manually.
 
 Examples:
 
+```text
 AI Product Manager
 Cybersecurity Analyst
 Blockchain Developer
@@ -404,89 +461,99 @@ Healthcare Data Analyst
 Sales Manager
 Cloud Security Engineer
 Game Developer
+```
 
 The learner can also enter skill gaps manually:
 
+```text
 System Design, Docker, REST APIs
+```
 
 The backend then generates practice content around the supplied profile.
 
-📄 AI Resume Analysis
+## 📄 AI Resume Analysis
 
 Resume analysis can process uploaded resume information and return:
 
-Technical skills
-Experience
-Education
-Certifications
-Skill gaps
-Recommended roles
-Professional summary
+- Technical skills
+- Experience
+- Education
+- Certifications
+- Skill gaps
+- Recommended roles
+- Professional summary
 
 The system is designed to analyze the resume dynamically rather than relying only on a predefined career list.
 
-🏢 AI Company Role Matching
+## 🏢 AI Company Role Matching
 
 The company-role module analyzes the candidate's skills and dynamically suggests relevant roles.
 
 A role recommendation can include:
 
+```text
 Role
 Match Percentage
 Matched Skills
 Missing Skills
 Reason
+```
 
 This allows learners to understand not only which roles may fit them, but also which skills they should improve.
 
-👤 Student Profile
+## 👤 Student Profile
 
 The dashboard profile menu provides quick access to:
 
-Student name
-Email
-Career goal
-Experience level
-Technical skills
-Skill gaps
-Latest mock-test score
-AI Career Roadmap
-Learning Plan
-Retake Assessment
-Logout
-📊 Progress Tracking
+- Student name
+- Email
+- Career goal
+- Experience level
+- Technical skills
+- Skill gaps
+- Latest mock-test score
+- AI Career Roadmap
+- Learning Plan
+- Retake Assessment
+- Logout
+
+## 📊 Progress Tracking
 
 The dashboard provides high-level learning metrics:
 
+```text
 Skills Assessed
 Skill Gaps
 Roadmap Progress
 Learning Progress
+```
 
 The application can also track completed:
 
-Roadmap topics
-Learning tasks
-Practice questions
-🔌 Important API Capabilities
+- Roadmap topics
+- Learning tasks
+- Practice questions
+
+## 🔌 Important API Capabilities
 
 The FastAPI backend provides endpoints for:
 
-User registration
-User login
-Skill assessment
-Assessment retrieval
-AI mock-test generation
-AI career roadmap
-AI learning plan
-Resume analysis
-Practice questions
-Company-role matching
-Progress tracking
-Health checks
+- User registration
+- User login
+- Skill assessment
+- Assessment retrieval
+- AI mock-test generation
+- AI career roadmap
+- AI learning plan
+- Resume analysis
+- Practice questions
+- Company-role matching
+- Progress tracking
+- Health checks
 
 Important endpoints include:
 
+```text
 POST /api/auth/register
 POST /api/auth/login
 
@@ -504,11 +571,17 @@ POST /api/practice-questions/
 POST /api/resume/
 
 GET  /api/progress/
+```
 
 FastAPI Swagger documentation:
 
+```text
 http://127.0.0.1:8000/docs
-🗺️ AI Decision Flow
+```
+
+## 🗺️ AI Decision Flow
+
+```text
 Student Profile
       ↓
 Career Goal
@@ -532,21 +605,26 @@ AI Roadmap
 Practice Questions
       ↓
 Progress Tracking
-🛡️ Security Notes
-Passwords are stored using secure password hashing.
-Protected backend routes use token-based authentication.
-API keys are stored through environment variables.
-.env files should never be committed.
-Production deployments should use HTTPS.
-Production deployments should use strong secrets.
-CORS should be restricted to trusted production frontend origins.
-Local database files should not be committed to the repository.
-💻 Local Development Notes
+```
+
+## 🛡️ Security Notes
+
+- Passwords are stored using secure password hashing.
+- Protected backend routes use token-based authentication.
+- API keys are stored through environment variables.
+- `.env` files should never be committed.
+- Production deployments should use HTTPS.
+- Production deployments should use strong secrets.
+- CORS should be restricted to trusted production frontend origins.
+- Local database files should not be committed to the repository.
+
+## 💻 Local Development Notes
 
 The frontend currently runs through Vite.
 
 Typical development URLs:
 
+```text
 Frontend:
 http://localhost:5176/
 
@@ -555,13 +633,15 @@ http://127.0.0.1:8000/
 
 API Docs:
 http://127.0.0.1:8000/docs
+```
 
 If the selected frontend port is already in use, Vite may automatically choose another available port.
 
-☁️ Deployment
+## ☁️ Deployment
 
 Recommended production architecture:
 
+```text
 React + Vite Frontend
           ↓
       Vercel
@@ -573,17 +653,19 @@ React + Vite Frontend
        Render
           ↓
    Production Database
+```
 
 Production deployment should use:
 
-HTTPS
-Environment variables
-Secure API keys
-Production database configuration
-Restricted CORS
-Strong authentication secrets
-Production-ready logging and monitoring
-🎯 Why SkillBridge AI?
+- HTTPS
+- Environment variables
+- Secure API keys
+- Production database configuration
+- Restricted CORS
+- Strong authentication secrets
+- Production-ready logging and monitoring
+
+## 🎯 Why SkillBridge AI?
 
 Career preparation is often fragmented across different tools.
 
@@ -597,6 +679,7 @@ Another may offer assessments.
 
 SkillBridge AI brings these workflows together:
 
+```text
 Assess
   ↓
 Analyze
@@ -612,9 +695,11 @@ Learn
 Practice
   ↓
 Track Progress
+```
 
 The core idea is simple:
 
+```text
 What do you know?
         +
 What do you want to become?
@@ -624,47 +709,53 @@ Where are your gaps?
 How well did you perform?
         ↓
 What should you learn next?
-📌 Project Highlights
+```
 
-AI-Powered: Hugging Face + Llama-based career intelligence
+## 📌 Project Highlights
 
-Adaptive: career-specific mock tests and learning recommendations
+**AI-Powered:** Hugging Face + Llama-based career intelligence
 
-Personalized: skill gaps drive roadmap and learning content
+**Adaptive:** career-specific mock tests and learning recommendations
 
-Full-stack: React + FastAPI + SQLAlchemy
+**Personalized:** skill gaps drive roadmap and learning content
 
-Authentication: token-based protected user flows
+**Full-stack:** React + FastAPI + SQLAlchemy
 
-Resume Intelligence: AI-powered resume analysis
+**Authentication:** token-based protected user flows
 
-Career Intelligence: AI company-role matching
+**Resume Intelligence:** AI-powered resume analysis
 
-Learning: personalized 7-day learning plans
+**Career Intelligence:** AI company-role matching
 
-Practice: custom career-based practice questions
+**Learning:** personalized 7-day learning plans
 
-Tracking: roadmap, learning, and practice progress
+**Practice:** custom career-based practice questions
 
-Flexible: custom career goals supported in personalized practice
+**Tracking:** roadmap, learning, and practice progress
 
-🔮 Future Improvements
-User-specific cloud database persistence across all modules
-Advanced mock-test analytics
-Detailed skill proficiency history
-AI interview simulator
-AI-generated interview feedback
-Resume-to-job matching
-Job recommendation engine
-Weekly AI roadmap re-planning
-Advanced role benchmarking
-Notifications and learning reminders
-Automated backend and frontend tests
-CI/CD pipeline
-Production monitoring
-Multi-provider AI support
-More detailed career readiness scoring
-📝 Project Status
+**Flexible:** custom career goals supported in personalized practice
+
+## 🔮 Future Improvements
+
+- User-specific cloud database persistence across all modules
+- Advanced mock-test analytics
+- Detailed skill proficiency history
+- AI interview simulator
+- AI-generated interview feedback
+- Resume-to-job matching
+- Job recommendation engine
+- Weekly AI roadmap re-planning
+- Advanced role benchmarking
+- Notifications and learning reminders
+- Automated backend and frontend tests
+- CI/CD pipeline
+- Production monitoring
+- Multi-provider AI support
+- More detailed career readiness scoring
+
+## 📝 Project Status
+
+```text
 Core MVP: Complete
 User Registration: Complete
 User Login: Complete
@@ -680,14 +771,18 @@ AI Company Role Matching: Complete
 Progress Tracking: Complete
 GitHub Repository: Complete
 Live Deployment: Next Step
-👨‍💻 Author
+```
 
-Hardik Garg
+## 👨‍💻 Author
 
-GitHub: @hardikgarg30
+**Hardik Garg**
 
-Project: SkillBridge AI
+GitHub: [@hardikgarg30](https://github.com/hardikgarg30)
 
-⭐ Support
+Project: [SkillBridge AI](https://github.com/hardikgarg30/SkillBridge-AI)
+
+## ⭐ Support
 
 If you find SkillBridge AI useful or interesting, consider giving the repository a star.
+
+---
