@@ -108,7 +108,8 @@ It combines a React + Vite frontend, FastAPI backend, SQLAlchemy persistence, JW
 │   Hugging Face Inference API │
 │       Llama 3.1 8B Instruct  │
 └──────────────────────────────┘
-📁 Project Structure
+
+## 📁 Project Structure
 SKILLBRIDGE-AI/
 ├── client/
 │   ├── public/
@@ -161,6 +162,8 @@ SKILLBRIDGE-AI/
 ├── .gitignore
 ├── .env.example
 └── README.md
+
+
 🚀 Run Locally
 Requirements
 Windows 10/11
@@ -195,7 +198,6 @@ Frontend:
 
 http://localhost:5176
 
-If Vite selects another available port such as 5173, 5174, or 5175, use the URL printed in the terminal.
 
 🔐 Environment Variables
 
@@ -207,7 +209,6 @@ Example:
 
 HF_API_KEY=your_huggingface_api_key
 
-Never commit your real API key to GitHub.
 
 Use .env.example as the safe configuration template.
 
