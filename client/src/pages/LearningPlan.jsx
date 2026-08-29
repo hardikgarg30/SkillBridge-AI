@@ -1,41 +1,51 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 
+const API_URL =
+  import.meta.env.VITE_API_URL ||
+  "http://127.0.0.1:8000";
+
 function LearningPlan() {
   const [learningPlan, setLearningPlan] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
 
-  const [completedTasks, setCompletedTasks] = useState(() => {
-    try {
-      return JSON.parse(
-        localStorage.getItem(
-          "skillbridge_completed_learning_tasks"
-        ) || "[]"
-      );
-    } catch {
-      return [];
-    }
-  });
+  const [completedTasks, setCompletedTasks] =
+    useState(() => {
+      try {
+        return JSON.parse(
+          localStorage.getItem(
+            "skillbridge_completed_learning_tasks"
+          ) || "[]"
+        );
+      } catch {
+        return [];
+      }
+    });
 
   useEffect(() => {
-    fetch("http://127.0.0.1:8000/api/learning-plan/")
+    fetch(`${API_URL}/api/learning-plan/`)
       .then((response) => {
         if (!response.ok) {
-          throw new Error("Failed to fetch learning plan");
+          throw new Error(
+            "Failed to fetch learning plan"
+          );
         }
 
         return response.json();
       })
       .then((result) => {
-        if (result.success && result.data) {
+        if (result?.success && result?.data) {
           setLearningPlan(result.data);
         } else {
-          setError("No learning plan found.");
+          setError(
+            "No learning plan found."
+          );
         }
       })
       .catch((err) => {
         console.error(err);
+
         setError(
           "Unable to load learning plan. Please try again."
         );
@@ -48,7 +58,9 @@ function LearningPlan() {
   const toggleTask = (taskId) => {
     setCompletedTasks((previous) => {
       const updated = previous.includes(taskId)
-        ? previous.filter((id) => id !== taskId)
+        ? previous.filter(
+            (id) => id !== taskId
+          )
         : [...previous, taskId];
 
       localStorage.setItem(
@@ -114,26 +126,31 @@ function LearningPlan() {
     plan?.days ||
     [];
 
-  const allTasks = dailyPlan.flatMap(
-    (day, dayIndex) =>
-      (day.tasks || []).map(
-        (task, taskIndex) => ({
-          ...task,
-          id:
-            task.id ||
-            `${dayIndex}-${taskIndex}`,
-        })
-      )
-  );
+  const allTasks =
+    dailyPlan.flatMap(
+      (day, dayIndex) =>
+        (day.tasks || []).map(
+          (task, taskIndex) => ({
+            ...task,
+            id:
+              task.id ||
+              `${dayIndex}-${taskIndex}`,
+          })
+        )
+    );
 
-  const completedCount = allTasks.filter(
-    (task) => completedTasks.includes(task.id)
-  ).length;
+  const completedCount =
+    allTasks.filter(
+      (task) =>
+        completedTasks.includes(task.id)
+    ).length;
 
   const progress =
     allTasks.length > 0
       ? Math.round(
-          (completedCount / allTasks.length) * 100
+          (completedCount /
+            allTasks.length) *
+            100
         )
       : 0;
 
@@ -190,7 +207,8 @@ function LearningPlan() {
             </div>
 
             <p className="text-sm text-gray-400">
-              {completedCount} / {allTasks.length} tasks completed
+              {completedCount} /{" "}
+              {allTasks.length} tasks completed
             </p>
           </div>
 
@@ -214,7 +232,8 @@ function LearningPlan() {
             </p>
 
             <h2 className="mt-2 text-xl font-semibold">
-              {learningPlan?.career_goal || "Not specified"}
+              {learningPlan?.career_goal ||
+                "Not specified"}
             </h2>
           </div>
 
@@ -224,7 +243,8 @@ function LearningPlan() {
             </p>
 
             <h2 className="mt-2 text-xl font-semibold capitalize">
-              {learningPlan?.experience_level || "Not specified"}
+              {learningPlan?.experience_level ||
+                "Not specified"}
             </h2>
           </div>
 
@@ -234,7 +254,8 @@ function LearningPlan() {
             </p>
 
             <h2 className="mt-2 text-xl font-semibold">
-              {learningPlan?.skill_gaps?.length || 0}
+              {learningPlan?.skill_gaps?.length ||
+                0}
             </h2>
           </div>
 
@@ -250,101 +271,110 @@ function LearningPlan() {
               </p>
             </div>
           ) : (
-            dailyPlan.map((day, dayIndex) => (
+            dailyPlan.map(
+              (day, dayIndex) => (
+                <div
+                  key={dayIndex}
+                  className="rounded-2xl border border-gray-800 bg-gray-900 p-6"
+                >
 
-              <div
-                key={dayIndex}
-                className="rounded-2xl border border-gray-800 bg-gray-900 p-6"
-              >
+                  <div className="flex flex-col gap-2 md:flex-row md:items-center md:justify-between">
 
-                <div className="flex flex-col gap-2 md:flex-row md:items-center md:justify-between">
+                    <div>
+                      <h2 className="text-2xl font-semibold">
+                        {day.day ||
+                          `Day ${dayIndex + 1}`}
+                      </h2>
 
-                  <div>
-                    <h2 className="text-2xl font-semibold">
-                      {day.day || `Day ${dayIndex + 1}`}
-                    </h2>
+                      {day.focus && (
+                        <p className="mt-1 text-gray-400">
+                          Focus: {day.focus}
+                        </p>
+                      )}
+                    </div>
 
-                    {day.focus && (
-                      <p className="mt-1 text-gray-400">
-                        Focus: {day.focus}
-                      </p>
+                  </div>
+
+                  {/* Tasks */}
+                  <div className="mt-6 space-y-3">
+
+                    {(day.tasks || []).map(
+                      (task, taskIndex) => {
+                        const taskId =
+                          task.id ||
+                          `${dayIndex}-${taskIndex}`;
+
+                        const isCompleted =
+                          completedTasks.includes(
+                            taskId
+                          );
+
+                        const taskTitle =
+                          typeof task ===
+                          "string"
+                            ? task
+                            : task.title ||
+                              task.name ||
+                              "Learning Task";
+
+                        const taskDescription =
+                          typeof task ===
+                          "object"
+                            ? task.description
+                            : "";
+
+                        return (
+                          <div
+                            key={taskId}
+                            className="flex gap-4 rounded-xl border border-gray-800 bg-gray-950 p-4"
+                          >
+
+                            <button
+                              type="button"
+                              onClick={() =>
+                                toggleTask(
+                                  taskId
+                                )
+                              }
+                              className={`mt-1 flex h-6 w-6 shrink-0 items-center justify-center rounded-md border ${
+                                isCompleted
+                                  ? "border-white bg-white text-black"
+                                  : "border-gray-600"
+                              }`}
+                            >
+                              {isCompleted
+                                ? "✓"
+                                : ""}
+                            </button>
+
+                            <div>
+                              <h3
+                                className={`font-semibold ${
+                                  isCompleted
+                                    ? "text-gray-500 line-through"
+                                    : "text-white"
+                                }`}
+                              >
+                                {taskTitle}
+                              </h3>
+
+                              {taskDescription && (
+                                <p className="mt-1 text-sm text-gray-400">
+                                  {taskDescription}
+                                </p>
+                              )}
+                            </div>
+
+                          </div>
+                        );
+                      }
                     )}
+
                   </div>
 
                 </div>
-
-                {/* Tasks */}
-                <div className="mt-6 space-y-3">
-
-                  {(day.tasks || []).map(
-                    (task, taskIndex) => {
-
-                      const taskId =
-                        task.id ||
-                        `${dayIndex}-${taskIndex}`;
-
-                      const isCompleted =
-                        completedTasks.includes(taskId);
-
-                      const taskTitle =
-                        typeof task === "string"
-                          ? task
-                          : task.title ||
-                            task.name ||
-                            "Learning Task";
-
-                      const taskDescription =
-                        typeof task === "object"
-                          ? task.description
-                          : "";
-
-                      return (
-                        <div
-                          key={taskId}
-                          className="flex gap-4 rounded-xl border border-gray-800 bg-gray-950 p-4"
-                        >
-
-                          <button
-                            onClick={() =>
-                              toggleTask(taskId)
-                            }
-                            className={`mt-1 flex h-6 w-6 shrink-0 items-center justify-center rounded-md border ${
-                              isCompleted
-                                ? "border-white bg-white text-black"
-                                : "border-gray-600"
-                            }`}
-                          >
-                            {isCompleted ? "✓" : ""}
-                          </button>
-
-                          <div>
-                            <h3
-                              className={`font-semibold ${
-                                isCompleted
-                                  ? "text-gray-500 line-through"
-                                  : "text-white"
-                              }`}
-                            >
-                              {taskTitle}
-                            </h3>
-
-                            {taskDescription && (
-                              <p className="mt-1 text-sm text-gray-400">
-                                {taskDescription}
-                              </p>
-                            )}
-                          </div>
-
-                        </div>
-                      );
-                    }
-                  )}
-
-                </div>
-
-              </div>
-
-            ))
+              )
+            )
           )}
 
         </div>

@@ -1,19 +1,19 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
+const API_URL =
+  import.meta.env.VITE_API_URL ||
+  "http://127.0.0.1:8000";
+
 function PracticeQuestions() {
   const navigate = useNavigate();
 
   const [careerGoal, setCareerGoal] = useState("");
   const [experienceLevel, setExperienceLevel] =
     useState("");
-
   const [skillGaps, setSkillGaps] = useState("");
-
   const [questions, setQuestions] = useState([]);
-
   const [loading, setLoading] = useState(false);
-
   const [error, setError] = useState("");
 
   const [visibleAnswers, setVisibleAnswers] =
@@ -94,10 +94,9 @@ function PracticeQuestions() {
       // ========================================================
 
       const response = await fetch(
-        "http://127.0.0.1:8000/api/practice-questions/",
+        `${API_URL}/api/practice-questions/`,
         {
           method: "POST",
-
           headers: {
             "Content-Type": "application/json",
           },
@@ -118,7 +117,9 @@ function PracticeQuestions() {
       );
 
       const result =
-        await response.json();
+        await response
+          .json()
+          .catch(() => null);
 
       // ========================================================
       // RESPONSE VALIDATION
@@ -128,6 +129,7 @@ function PracticeQuestions() {
         throw new Error(
           result?.message ||
             result?.detail ||
+            result?.error ||
             "Failed to generate questions."
         );
       }
@@ -156,7 +158,6 @@ function PracticeQuestions() {
           "No questions were returned by the server."
         );
       }
-
     } catch (err) {
       console.error(
         "Practice Questions Error:",
@@ -182,7 +183,6 @@ function PracticeQuestions() {
     setVisibleAnswers(
       (previous) => ({
         ...previous,
-
         [questionId]:
           !previous[questionId],
       })
@@ -261,12 +261,9 @@ function PracticeQuestions() {
 
   return (
     <div className="min-h-screen bg-gray-950 px-6 py-10 text-white">
-
       <div className="mx-auto max-w-5xl">
 
-        {/* ==================================================
-            BACK
-        ================================================== */}
+        {/* Back */}
 
         <button
           type="button"
@@ -278,12 +275,9 @@ function PracticeQuestions() {
           ← Back to Dashboard
         </button>
 
-        {/* ==================================================
-            HEADER
-        ================================================== */}
+        {/* Header */}
 
         <div className="mb-10">
-
           <p className="text-sm text-gray-500">
             Personalized Practice
           </p>
@@ -297,32 +291,23 @@ function PracticeQuestions() {
             level and skill gaps to generate
             personalized practice questions.
           </p>
-
         </div>
 
-        {/* ==================================================
-            GENERATOR FORM
-        ================================================== */}
+        {/* Generator Form */}
 
         <div className="rounded-2xl border border-gray-800 bg-gray-900 p-7">
-
           <h2 className="text-xl font-semibold">
             Generate Practice Questions
           </h2>
 
           <form
-            onSubmit={
-              generateQuestions
-            }
+            onSubmit={generateQuestions}
             className="mt-6 space-y-5"
           >
 
-            {/* =================================================
-                CAREER GOAL
-            ================================================= */}
+            {/* Career Goal */}
 
             <div>
-
               <label className="mb-2 block text-sm text-gray-400">
                 Career Goal
               </label>
@@ -344,15 +329,11 @@ function PracticeQuestions() {
                 Enter any career role you want
                 to practice for.
               </p>
-
             </div>
 
-            {/* =================================================
-                EXPERIENCE
-            ================================================= */}
+            {/* Experience */}
 
             <div>
-
               <label className="mb-2 block text-sm text-gray-400">
                 Experience Level
               </label>
@@ -367,7 +348,6 @@ function PracticeQuestions() {
                 required
                 className="w-full rounded-lg border border-gray-700 bg-gray-950 px-4 py-3 text-white outline-none transition focus:border-gray-500"
               >
-
                 <option value="">
                   Select Experience Level
                 </option>
@@ -383,17 +363,12 @@ function PracticeQuestions() {
                 <option value="Advanced">
                   Advanced
                 </option>
-
               </select>
-
             </div>
 
-            {/* =================================================
-                SKILL GAPS
-            ================================================= */}
+            {/* Skill Gaps */}
 
             <div>
-
               <label className="mb-2 block text-sm text-gray-400">
                 Skill Gaps
               </label>
@@ -414,12 +389,9 @@ function PracticeQuestions() {
               <p className="mt-2 text-xs text-gray-500">
                 Enter skill gaps separated by commas.
               </p>
-
             </div>
 
-            {/* =================================================
-                GENERATE
-            ================================================= */}
+            {/* Generate */}
 
             <button
               type="submit"
@@ -430,33 +402,23 @@ function PracticeQuestions() {
                 ? "Generating Questions..."
                 : "Generate Practice Questions"}
             </button>
-
           </form>
-
         </div>
 
-        {/* ==================================================
-            ERROR
-        ================================================== */}
+        {/* Error */}
 
         {error && (
           <div className="mt-6 rounded-xl border border-red-800 bg-red-950 p-5">
-
             <p className="text-red-300">
               {error}
             </p>
-
           </div>
         )}
 
-        {/* ==================================================
-            PRACTICE PROFILE
-        ================================================== */}
+        {/* Practice Profile */}
 
         {questions.length > 0 && (
-
           <div className="mt-8 rounded-2xl border border-gray-800 bg-gray-900 p-6">
-
             <p className="text-sm text-gray-400">
               Practice Profile
             </p>
@@ -466,7 +428,6 @@ function PracticeQuestions() {
               {/* Career */}
 
               <div className="rounded-xl border border-gray-800 bg-gray-950 p-4">
-
                 <p className="text-xs uppercase tracking-wide text-gray-500">
                   Career Goal
                 </p>
@@ -474,13 +435,11 @@ function PracticeQuestions() {
                 <p className="mt-1 font-semibold">
                   {careerGoal}
                 </p>
-
               </div>
 
               {/* Experience */}
 
               <div className="rounded-xl border border-gray-800 bg-gray-950 p-4">
-
                 <p className="text-xs uppercase tracking-wide text-gray-500">
                   Experience Level
                 </p>
@@ -488,32 +447,25 @@ function PracticeQuestions() {
                 <p className="mt-1 font-semibold">
                   {experienceLevel}
                 </p>
-
               </div>
-
             </div>
 
             {/* Skill Gaps */}
 
             <div className="mt-4 rounded-xl border border-gray-800 bg-gray-950 p-4">
-
               <p className="text-xs uppercase tracking-wide text-gray-500">
                 Skill Gaps
               </p>
 
               <div className="mt-3 flex flex-wrap gap-2">
-
                 {skillGaps
                   .split(",")
                   .map(
                     (gap, index) => {
-
                       const cleanGap =
                         gap.trim();
 
-                      if (
-                        !cleanGap
-                      ) {
+                      if (!cleanGap) {
                         return null;
                       }
 
@@ -527,26 +479,18 @@ function PracticeQuestions() {
                       );
                     }
                   )}
-
               </div>
-
             </div>
-
           </div>
         )}
 
-        {/* ==================================================
-            PROGRESS
-        ================================================== */}
+        {/* Progress */}
 
         {questions.length > 0 && (
-
           <div className="mt-8 rounded-2xl border border-gray-800 bg-gray-900 p-6">
-
             <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
 
               <div>
-
                 <p className="text-sm text-gray-400">
                   Practice Progress
                 </p>
@@ -554,7 +498,6 @@ function PracticeQuestions() {
                 <h2 className="mt-1 text-3xl font-bold">
                   {practiceProgress}%
                 </h2>
-
               </div>
 
               <div className="text-sm text-gray-400">
@@ -562,37 +505,28 @@ function PracticeQuestions() {
                 {questions.length}{" "}
                 completed
               </div>
-
             </div>
 
             <div className="mt-5 h-3 overflow-hidden rounded-full bg-gray-800">
-
               <div
                 className="h-full rounded-full bg-white transition-all duration-500"
                 style={{
                   width: `${practiceProgress}%`,
                 }}
               />
-
             </div>
-
           </div>
         )}
 
-        {/* ==================================================
-            QUESTIONS
-        ================================================== */}
+        {/* Questions */}
 
         {questions.length > 0 && (
-
           <div className="mt-8 space-y-6">
-
             {questions.map(
               (
                 question,
                 index
               ) => {
-
                 const questionId =
                   question.id ??
                   index + 1;
@@ -639,7 +573,6 @@ function PracticeQuestions() {
                           Completed
                         </span>
                       )}
-
                     </div>
 
                     {/* Metadata */}
@@ -666,7 +599,6 @@ function PracticeQuestions() {
                           {question.type}
                         </span>
                       )}
-
                     </div>
 
                     {/* Answer */}
@@ -719,23 +651,18 @@ function PracticeQuestions() {
                       </button>
 
                     </div>
-
                   </div>
                 );
               }
             )}
-
           </div>
         )}
 
-        {/* ==================================================
-            EMPTY STATE
-        ================================================== */}
+        {/* Empty State */}
 
         {!loading &&
           questions.length === 0 &&
           !error && (
-
             <div className="mt-8 rounded-2xl border border-gray-800 bg-gray-900 p-8 text-center">
 
               <h2 className="text-xl font-semibold">
@@ -751,12 +678,9 @@ function PracticeQuestions() {
             </div>
           )}
 
-        {/* ==================================================
-            PROGRESS BUTTON
-        ================================================== */}
+        {/* Progress Button */}
 
         {questions.length > 0 && (
-
           <div className="mt-8 flex justify-center">
 
             <button
@@ -773,7 +697,6 @@ function PracticeQuestions() {
         )}
 
       </div>
-
     </div>
   );
 }

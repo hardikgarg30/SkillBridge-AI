@@ -1,8 +1,13 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
 
+const API_URL =
+  import.meta.env.VITE_API_URL ||
+  "http://127.0.0.1:8000";
+
 function ResumeAnalysis() {
   const [file, setFile] = useState(null);
+
   const [loading, setLoading] = useState(false);
   const [result, setResult] = useState(null);
   const [error, setError] = useState("");
@@ -21,34 +26,42 @@ function ResumeAnalysis() {
 
     try {
       const formData = new FormData();
+
       formData.append("file", file);
 
       const response = await fetch(
-        "http://127.0.0.1:8000/api/resume/upload",
+        `${API_URL}/api/resume/upload`,
         {
           method: "POST",
           body: formData,
         }
       );
 
-      const data = await response.json();
+      const data =
+        await response
+          .json()
+          .catch(() => null);
 
-      if (!response.ok || !data.success) {
+      if (!response.ok || !data?.success) {
         setError(
-          data.message || "Resume analysis failed."
+          data?.message ||
+            data?.detail ||
+            data?.error ||
+            "Resume analysis failed."
         );
         return;
       }
 
       setResult(data.data);
-
     } catch (err) {
-      console.error(err);
+      console.error(
+        "Resume analysis error:",
+        err
+      );
 
       setError(
         "Unable to connect to server. Make sure backend is running."
       );
-
     } finally {
       setLoading(false);
     }
@@ -80,6 +93,7 @@ function ResumeAnalysis() {
       <main className="mx-auto max-w-4xl px-6 py-12">
 
         <div className="mb-8">
+
           <h1 className="text-4xl font-bold">
             Resume Analysis
           </h1>
@@ -88,6 +102,7 @@ function ResumeAnalysis() {
             Upload your resume and let SkillBridge AI
             analyze your skills, experience and skill gaps.
           </p>
+
         </div>
 
         <div className="rounded-2xl border border-gray-800 bg-gray-900 p-8">
@@ -101,7 +116,9 @@ function ResumeAnalysis() {
             <input
               type="file"
               accept=".pdf,.docx"
-              onChange={(e) => setFile(e.target.files[0])}
+              onChange={(e) =>
+                setFile(e.target.files?.[0] || null)
+              }
               className="block w-full rounded-lg border border-gray-700 bg-gray-950 p-3 text-sm text-gray-300"
             />
 
@@ -139,6 +156,7 @@ function ResumeAnalysis() {
           <div className="mt-8 space-y-6">
 
             <div>
+
               <h2 className="text-2xl font-bold">
                 Analysis Result
               </h2>
@@ -146,6 +164,7 @@ function ResumeAnalysis() {
               <p className="mt-1 text-gray-400">
                 {result.filename}
               </p>
+
             </div>
 
             <div className="rounded-2xl border border-gray-800 bg-gray-900 p-6">
@@ -217,7 +236,8 @@ function ResumeAnalysis() {
 
                 <p className="mt-3 text-gray-400">
                   {(result.analysis?.certifications || [])
-                    .join(", ") || "None detected"}
+                    .join(", ") ||
+                    "None detected"}
                 </p>
 
               </div>
@@ -232,7 +252,8 @@ function ResumeAnalysis() {
 
               <div className="mt-3 text-gray-400">
                 {(result.analysis?.education || [])
-                  .join(", ") || "Not detected"}
+                  .join(", ") ||
+                  "Not detected"}
               </div>
 
             </div>
@@ -248,7 +269,6 @@ function ResumeAnalysis() {
         )}
 
       </main>
-
     </div>
   );
 }

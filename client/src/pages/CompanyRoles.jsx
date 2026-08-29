@@ -1,6 +1,10 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
+const API_URL =
+  import.meta.env.VITE_API_URL ||
+  "http://127.0.0.1:8000";
+
 function CompanyRoles() {
   const navigate = useNavigate();
 
@@ -21,7 +25,9 @@ function CompanyRoles() {
       .filter(Boolean);
 
     if (technicalSkills.length === 0) {
-      setError("Please enter at least one technical skill.");
+      setError(
+        "Please enter at least one technical skill."
+      );
       return;
     }
 
@@ -29,7 +35,7 @@ function CompanyRoles() {
 
     try {
       const response = await fetch(
-        "http://127.0.0.1:8000/api/company-roles/",
+        `${API_URL}/api/company-roles/`,
         {
           method: "POST",
           headers: {
@@ -41,18 +47,27 @@ function CompanyRoles() {
         }
       );
 
-      const result = await response.json();
+      const result =
+        await response
+          .json()
+          .catch(() => null);
 
-      if (!response.ok || !result.success) {
+      if (!response.ok || !result?.success) {
         setError(
-          result.message || "Unable to detect suitable roles."
+          result?.message ||
+            result?.detail ||
+            result?.error ||
+            "Unable to detect suitable roles."
         );
         return;
       }
 
       setRoles(result.data || []);
     } catch (err) {
-      console.error("Company role detection error:", err);
+      console.error(
+        "Company role detection error:",
+        err
+      );
 
       setError(
         "Unable to connect to server. Make sure the backend is running."
@@ -69,6 +84,7 @@ function CompanyRoles() {
         {/* Header */}
         <div className="mb-10">
           <button
+            type="button"
             onClick={() => navigate("/dashboard")}
             className="mb-6 text-sm text-gray-400 hover:text-white"
           >
@@ -98,7 +114,9 @@ function CompanyRoles() {
               <input
                 type="text"
                 value={skills}
-                onChange={(e) => setSkills(e.target.value)}
+                onChange={(e) =>
+                  setSkills(e.target.value)
+                }
                 placeholder="Python, Java, SQL, Git, React"
                 className="w-full rounded-lg border border-gray-700 bg-gray-950 px-4 py-3 text-white outline-none transition focus:border-white"
               />
@@ -170,14 +188,16 @@ function CompanyRoles() {
                     <div className="mt-3 flex flex-wrap gap-2">
                       {role.matched_skills &&
                       role.matched_skills.length > 0 ? (
-                        role.matched_skills.map((skill, skillIndex) => (
-                          <span
-                            key={`${skill}-${skillIndex}`}
-                            className="rounded-full border border-gray-700 bg-gray-950 px-3 py-1 text-xs text-gray-300"
-                          >
-                            {skill}
-                          </span>
-                        ))
+                        role.matched_skills.map(
+                          (skill, skillIndex) => (
+                            <span
+                              key={`${skill}-${skillIndex}`}
+                              className="rounded-full border border-gray-700 bg-gray-950 px-3 py-1 text-xs text-gray-300"
+                            >
+                              {skill}
+                            </span>
+                          )
+                        )
                       ) : (
                         <span className="text-sm text-gray-500">
                           No matching skills yet.
@@ -195,14 +215,16 @@ function CompanyRoles() {
                     <div className="mt-3 flex flex-wrap gap-2">
                       {role.missing_skills &&
                       role.missing_skills.length > 0 ? (
-                        role.missing_skills.map((skill, skillIndex) => (
-                          <span
-                            key={`${skill}-${skillIndex}`}
-                            className="rounded-full border border-gray-700 px-3 py-1 text-xs text-gray-400"
-                          >
-                            {skill}
-                          </span>
-                        ))
+                        role.missing_skills.map(
+                          (skill, skillIndex) => (
+                            <span
+                              key={`${skill}-${skillIndex}`}
+                              className="rounded-full border border-gray-700 px-3 py-1 text-xs text-gray-400"
+                            >
+                              {skill}
+                            </span>
+                          )
+                        )
                       ) : (
                         <span className="text-sm text-gray-500">
                           No additional skills suggested.

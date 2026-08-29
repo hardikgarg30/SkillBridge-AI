@@ -1,6 +1,10 @@
 import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 
+const API_URL =
+  import.meta.env.VITE_API_URL ||
+  "http://127.0.0.1:8000";
+
 function Dashboard() {
   const navigate = useNavigate();
 
@@ -90,8 +94,7 @@ function Dashboard() {
 
           skillGaps =
             Array.isArray(
-              assessment?.skill_analysis
-                ?.skill_gaps
+              assessment?.skill_analysis?.skill_gaps
             )
               ? assessment.skill_analysis.skill_gaps
               : [];
@@ -200,7 +203,7 @@ function Dashboard() {
         try {
           const roadmapResponse =
             await fetch(
-              "http://127.0.0.1:8000/api/roadmap/"
+              `${API_URL}/api/roadmap/`
             );
 
           if (roadmapResponse.ok) {
@@ -215,8 +218,7 @@ function Dashboard() {
               roadmapResult.data.length > 0
             ) {
               const latestRoadmap =
-                roadmapResult.data[0]
-                  ?.roadmap;
+                roadmapResult.data[0]?.roadmap;
 
               const allTopics =
                 latestRoadmap?.phases?.flatMap(
@@ -300,7 +302,6 @@ function Dashboard() {
           roadmapProgress,
           learningProgress,
         });
-
       } catch (error) {
         console.error(
           "Failed to load dashboard data:",
@@ -348,7 +349,6 @@ function Dashboard() {
       ========================= */}
 
       <nav className="border-b border-gray-800 bg-gray-950">
-
         <div className="mx-auto flex max-w-7xl items-center justify-between px-8 py-4">
 
           {/* Logo */}
@@ -374,7 +374,9 @@ function Dashboard() {
             <button
               type="button"
               onClick={() =>
-                setProfileOpen((prev) => !prev)
+                setProfileOpen(
+                  (prev) => !prev
+                )
               }
               className="flex items-center gap-2 rounded-lg border border-gray-700 bg-gray-900 px-3 py-2 transition hover:bg-gray-800"
             >
@@ -390,7 +392,9 @@ function Dashboard() {
               </span>
 
               <span className="text-xs text-gray-400">
-                {profileOpen ? "▲" : "▼"}
+                {profileOpen
+                  ? "▲"
+                  : "▼"}
               </span>
 
             </button>
@@ -398,6 +402,7 @@ function Dashboard() {
             {/* Logout */}
 
             <button
+              type="button"
               onClick={handleLogout}
               className="rounded-lg border border-gray-700 px-4 py-2 text-sm transition hover:bg-gray-900"
             >
@@ -436,7 +441,6 @@ function Dashboard() {
                     </div>
 
                   </div>
-
                 </div>
 
                 {/* Profile Information */}
@@ -482,7 +486,7 @@ function Dashboard() {
                     </p>
 
                     {profileData.mockPercentage !==
-                      null ? (
+                    null ? (
                       <div className="mt-2">
 
                         <p className="text-2xl font-bold">
@@ -617,14 +621,10 @@ function Dashboard() {
                   </button>
 
                 </div>
-
               </div>
             )}
-
           </div>
-
         </div>
-
       </nav>
 
       {/* =========================
@@ -636,7 +636,6 @@ function Dashboard() {
         {/* Header */}
 
         <div>
-
           <h1 className="text-4xl font-bold">
             Dashboard
           </h1>
@@ -646,7 +645,6 @@ function Dashboard() {
             and follow your AI-powered
             learning roadmap.
           </p>
-
         </div>
 
         {/* =========================
@@ -658,7 +656,6 @@ function Dashboard() {
           {/* Skills Assessed */}
 
           <div className="rounded-2xl border border-gray-800 bg-gray-900 p-6">
-
             <p className="text-sm text-gray-400">
               Skills Assessed
             </p>
@@ -666,13 +663,11 @@ function Dashboard() {
             <h2 className="mt-3 text-4xl font-bold">
               {stats.skillsAssessed}
             </h2>
-
           </div>
 
           {/* Skill Gaps */}
 
           <div className="rounded-2xl border border-gray-800 bg-gray-900 p-6">
-
             <p className="text-sm text-gray-400">
               Skill Gaps
             </p>
@@ -680,13 +675,11 @@ function Dashboard() {
             <h2 className="mt-3 text-4xl font-bold">
               {stats.skillGaps}
             </h2>
-
           </div>
 
           {/* Roadmap Progress */}
 
           <div className="rounded-2xl border border-gray-800 bg-gray-900 p-6">
-
             <p className="text-sm text-gray-400">
               Roadmap Progress
             </p>
@@ -694,13 +687,11 @@ function Dashboard() {
             <h2 className="mt-3 text-4xl font-bold">
               {stats.roadmapProgress}%
             </h2>
-
           </div>
 
           {/* Learning Progress */}
 
           <div className="rounded-2xl border border-gray-800 bg-gray-900 p-6">
-
             <p className="text-sm text-gray-400">
               Learning Progress
             </p>
@@ -708,7 +699,6 @@ function Dashboard() {
             <h2 className="mt-3 text-4xl font-bold">
               {stats.learningProgress}%
             </h2>
-
           </div>
 
         </div>
@@ -722,7 +712,6 @@ function Dashboard() {
           {/* Resume Analysis */}
 
           <div className="rounded-2xl border border-gray-800 bg-gray-900 p-6">
-
             <h2 className="text-xl font-semibold">
               Resume Analysis
             </h2>
@@ -739,13 +728,11 @@ function Dashboard() {
             >
               Analyze Resume
             </Link>
-
           </div>
 
           {/* Skill Assessment */}
 
           <div className="rounded-2xl border border-gray-800 bg-gray-900 p-6">
-
             <h2 className="text-xl font-semibold">
               Skill Assessment
             </h2>
@@ -762,13 +749,11 @@ function Dashboard() {
             >
               Start Assessment
             </Link>
-
           </div>
 
           {/* AI Career Roadmap */}
 
           <div className="rounded-2xl border border-gray-800 bg-gray-900 p-6">
-
             <h2 className="text-xl font-semibold">
               AI Career Roadmap
             </h2>
@@ -785,13 +770,11 @@ function Dashboard() {
             >
               View Roadmap
             </Link>
-
           </div>
 
           {/* Company Roles */}
 
           <div className="rounded-2xl border border-gray-800 bg-gray-900 p-6">
-
             <h2 className="text-xl font-semibold">
               Company Roles
             </h2>
@@ -808,13 +791,11 @@ function Dashboard() {
             >
               Explore Company Roles
             </Link>
-
           </div>
 
           {/* Practice Questions */}
 
           <div className="rounded-2xl border border-gray-800 bg-gray-900 p-6">
-
             <h2 className="text-xl font-semibold">
               Practice Questions
             </h2>
@@ -831,13 +812,11 @@ function Dashboard() {
             >
               Practice Now
             </Link>
-
           </div>
 
           {/* Progress */}
 
           <div className="rounded-2xl border border-gray-800 bg-gray-900 p-6">
-
             <h2 className="text-xl font-semibold">
               Overall Progress
             </h2>
@@ -854,7 +833,6 @@ function Dashboard() {
             >
               View Progress
             </Link>
-
           </div>
 
         </div>
@@ -868,7 +846,6 @@ function Dashboard() {
           <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
 
             <div>
-
               <h2 className="text-xl font-semibold">
                 7-Day Learning Plan
               </h2>
@@ -878,7 +855,6 @@ function Dashboard() {
                 AI-generated learning plan
                 and track your daily progress.
               </p>
-
             </div>
 
             <Link
@@ -893,7 +869,6 @@ function Dashboard() {
         </div>
 
       </main>
-
     </div>
   );
 }
