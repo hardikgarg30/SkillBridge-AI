@@ -3,7 +3,6 @@ from fastapi.middleware.cors import CORSMiddleware
 
 from app.database.database import Base, engine
 
-
 # ============================================================
 # IMPORT ALL DATABASE MODELS
 # ============================================================
@@ -15,13 +14,11 @@ from app.models.user import User
 from app.models.resume import Resume
 from app.models.progress import Progress
 
-
 # ============================================================
 # CREATE DATABASE TABLES
 # ============================================================
 
 Base.metadata.create_all(bind=engine)
-
 
 # ============================================================
 # FASTAPI APPLICATION
@@ -33,14 +30,12 @@ app = FastAPI(
     version="1.0.0",
 )
 
-
 # ============================================================
 # CORS
 # ============================================================
 
 app.add_middleware(
     CORSMiddleware,
-
     allow_origins=[
         # Vite development servers
         "http://localhost:5173",
@@ -54,15 +49,14 @@ app.add_middleware(
 
         "http://localhost:5176",
         "http://127.0.0.1:5176",
+
+        # Production Vercel frontend
+        "https://skill-bridge-ai-beryl.vercel.app",
     ],
-
     allow_credentials=True,
-
     allow_methods=["*"],
-
     allow_headers=["*"],
 )
-
 
 # ============================================================
 # API ROUTERS
@@ -77,7 +71,6 @@ from app.routes.company_roles import router as company_roles_router
 from app.routes.practice_questions import router as practice_questions_router
 from app.routes.progress import router as progress_router
 
-
 # ============================================================
 # INCLUDE ROUTERS
 # ============================================================
@@ -91,7 +84,6 @@ app.include_router(company_roles_router)
 app.include_router(practice_questions_router)
 app.include_router(progress_router)
 
-
 # ============================================================
 # ROOT ENDPOINT
 # ============================================================
@@ -102,7 +94,6 @@ def root():
         "success": True,
         "message": "SkillBridge AI API is running",
     }
-
 
 # ============================================================
 # HEALTH CHECK
