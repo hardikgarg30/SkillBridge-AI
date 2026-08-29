@@ -83,9 +83,10 @@ function Register() {
         }
       );
 
-      const result = await response
-        .json()
-        .catch(() => null);
+      const result =
+        await response
+          .json()
+          .catch(() => null);
 
       console.log(
         "Register response:",
@@ -133,6 +134,7 @@ function Register() {
       <div className="mx-auto flex min-h-[90vh] max-w-md items-center justify-center">
         <div className="w-full rounded-2xl border border-gray-800 bg-gray-900 p-8 shadow-xl">
 
+          {/* Header */}
           <div className="mb-8 text-center">
             <Link
               to="/"
@@ -146,26 +148,31 @@ function Register() {
             </h1>
 
             <p className="mt-2 text-sm text-gray-400">
-              Start your personalized AI career journey.
+              Start building your personalized career path.
             </p>
           </div>
 
+          {/* Error */}
           {error && (
             <div className="mb-5 rounded-lg border border-red-800 bg-red-950 px-4 py-3 text-sm text-red-300">
               {error}
             </div>
           )}
 
+          {/* Success */}
           {success && (
             <div className="mb-5 rounded-lg border border-green-800 bg-green-950 px-4 py-3 text-sm text-green-300">
               {success}
             </div>
           )}
 
+          {/* Register Form */}
           <form
             onSubmit={handleRegister}
             className="space-y-5"
           >
+
+            {/* Full Name */}
             <div>
               <label className="mb-2 block text-sm text-gray-400">
                 Full Name
@@ -184,9 +191,10 @@ function Register() {
               />
             </div>
 
+            {/* Email */}
             <div>
               <label className="mb-2 block text-sm text-gray-400">
-                Email
+                Email Address
               </label>
 
               <input
@@ -195,13 +203,14 @@ function Register() {
                 onChange={(e) =>
                   setEmail(e.target.value)
                 }
-                placeholder="Enter your email"
+                placeholder="you@example.com"
                 autoComplete="email"
                 required
                 className="w-full rounded-lg border border-gray-700 bg-gray-950 px-4 py-3 text-white outline-none transition placeholder:text-gray-600 focus:border-gray-500"
               />
             </div>
 
+            {/* Password */}
             <div>
               <label className="mb-2 block text-sm text-gray-400">
                 Password
@@ -220,6 +229,7 @@ function Register() {
               />
             </div>
 
+            {/* Confirm Password */}
             <div>
               <label className="mb-2 block text-sm text-gray-400">
                 Confirm Password
@@ -240,6 +250,7 @@ function Register() {
               />
             </div>
 
+            {/* Submit */}
             <button
               type="submit"
               disabled={loading}
@@ -251,6 +262,7 @@ function Register() {
             </button>
           </form>
 
+          {/* Login Link */}
           <div className="mt-7 text-center text-sm text-gray-400">
             Already have an account?{" "}
             <Link
@@ -260,6 +272,7 @@ function Register() {
               Login
             </Link>
           </div>
+
         </div>
       </div>
     </div>
