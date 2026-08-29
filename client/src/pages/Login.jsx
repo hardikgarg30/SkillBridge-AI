@@ -189,7 +189,7 @@ function Login() {
 
             {/* Heading */}
             <h1 className="text-3xl font-bold">
-              Welcome Back
+              Welcome 
             </h1>
 
             <p className="mt-2 text-gray-400">
