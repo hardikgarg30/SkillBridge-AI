@@ -2,7 +2,7 @@
 
 ## 🌐 Live Demo
 
-🚀 **[Launch SkillBridge AI](skill-bridge-mj0yxafdx-hardikgarg30.vercel.app)**
+🚀 **[Launch SkillBridge AI](https://skill-bridge-mj0yxafdx-hardikgarg30.vercel.app/)**
 
 ### AI-Powered Career Skill Assessment, Adaptive Mock Testing & Personalized Learning Platform
 
