@@ -53,6 +53,7 @@ app.add_middleware(
         # Production Vercel frontend
         "https://skill-bridge-ai-beryl.vercel.app",
     ],
+
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
