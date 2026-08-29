@@ -1,6 +1,10 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 
+const API_URL =
+  import.meta.env.VITE_API_URL ||
+  "http://127.0.0.1:8000";
+
 function Login() {
   const navigate = useNavigate();
 
@@ -15,19 +19,14 @@ function Login() {
       "skillbridge_assessment",
       "skillbridge_mock_test_info",
       "skillbridge_mock_test_result",
-
       "skillbridge_roadmap",
       "skillbridge_current_roadmap",
       "skillbridge_roadmap_meta",
-
       "skillbridge_learning_plan",
-
       "skillbridge_completed_topics",
       "skillbridge_completed_learning_tasks",
-
       "skillbridge_resume_analysis",
       "skillbridge_resume",
-
       "skillbridge_progress",
     ];
 
@@ -43,15 +42,18 @@ function Login() {
     setLoading(true);
 
     try {
+      console.log(
+        "Login API:",
+        `${API_URL}/api/auth/login`
+      );
+
       const response = await fetch(
-        "http://127.0.0.1:8000/api/auth/login",
+        `${API_URL}/api/auth/login`,
         {
           method: "POST",
-
           headers: {
             "Content-Type": "application/json",
           },
-
           body: JSON.stringify({
             email: email.trim(),
             password,
@@ -59,11 +61,20 @@ function Login() {
         }
       );
 
-      const result = await response.json();
+      const result = await response
+        .json()
+        .catch(() => null);
 
-      if (!response.ok || !result.success) {
+      console.log(
+        "Login response:",
+        result
+      );
+
+      if (!response.ok || !result?.success) {
         setError(
-          result.message ||
+          result?.message ||
+            result?.detail ||
+            result?.error ||
             "Invalid email or password"
         );
 
@@ -142,7 +153,6 @@ function Login() {
       // =====================================================
 
       navigate("/dashboard");
-
     } catch (error) {
       console.error(
         "Login error:",
@@ -152,7 +162,6 @@ function Login() {
       setError(
         "Unable to connect to server. Make sure the backend is running."
       );
-
     } finally {
       setLoading(false);
     }
@@ -160,9 +169,7 @@ function Login() {
 
   return (
     <div className="min-h-screen bg-gray-950 text-white">
-
       <div className="flex min-h-screen items-center justify-center px-6 py-12">
-
         <div className="w-full max-w-md">
 
           <Link
@@ -182,8 +189,6 @@ function Login() {
               Sign in to continue your career journey.
             </p>
 
-            {/* Error */}
-
             {error && (
               <div className="mt-6 rounded-lg border border-red-800 bg-red-950 px-4 py-3 text-sm text-red-300">
                 {error}
@@ -198,7 +203,6 @@ function Login() {
               {/* Email */}
 
               <div>
-
                 <label className="mb-2 block text-sm font-medium">
                   Email Address
                 </label>
@@ -210,16 +214,15 @@ function Login() {
                     setEmail(e.target.value)
                   }
                   placeholder="you@example.com"
+                  autoComplete="email"
                   required
                   className="w-full rounded-lg border border-gray-700 bg-gray-950 px-4 py-3 text-white outline-none transition focus:border-white"
                 />
-
               </div>
 
               {/* Password */}
 
               <div>
-
                 <label className="mb-2 block text-sm font-medium">
                   Password
                 </label>
@@ -231,10 +234,10 @@ function Login() {
                     setPassword(e.target.value)
                   }
                   placeholder="Enter your password"
+                  autoComplete="current-password"
                   required
                   className="w-full rounded-lg border border-gray-700 bg-gray-950 px-4 py-3 text-white outline-none transition focus:border-white"
                 />
-
               </div>
 
               {/* Submit */}
@@ -248,11 +251,9 @@ function Login() {
                   ? "Signing In..."
                   : "Sign In"}
               </button>
-
             </form>
 
             <p className="mt-6 text-center text-sm text-gray-400">
-
               Don't have an account?{" "}
 
               <Link
@@ -261,15 +262,10 @@ function Login() {
               >
                 Create Account
               </Link>
-
             </p>
-
           </div>
-
         </div>
-
       </div>
-
     </div>
   );
 }
