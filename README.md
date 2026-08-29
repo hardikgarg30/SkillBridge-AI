@@ -1,5 +1,9 @@
 # SkillBridge AI 🚀
 
+## 🌐 Live Demo
+
+🚀 **[Launch SkillBridge AI](skill-bridge-mj0yxafdx-hardikgarg30.vercel.app)**
+
 ### AI-Powered Career Skill Assessment, Adaptive Mock Testing & Personalized Learning Platform
 
 SkillBridge AI is an AI-powered career development platform designed to help students and professionals assess their current skills, identify career-specific skill gaps, evaluate their knowledge, generate personalized career roadmaps, and follow structured learning plans.
