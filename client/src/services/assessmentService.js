@@ -1,4 +1,10 @@
-const API_URL = "http://127.0.0.1:8000";
+// ==============================
+// assessmentService.js
+// ==============================
+
+const API_URL =
+  import.meta.env.VITE_API_URL ||
+  "http://127.0.0.1:8000";
 
 function getLoggedInUser() {
   const storedUser = localStorage.getItem(
@@ -30,7 +36,6 @@ function getLoggedInUser() {
   return user;
 }
 
-
 // ============================================================
 // SUBMIT SKILL ASSESSMENT
 // ============================================================
@@ -44,37 +49,27 @@ export async function submitAssessment(
     `${API_URL}/api/assessment/`,
     {
       method: "POST",
-
       headers: {
         "Content-Type": "application/json",
-        "Authorization": `Bearer ${user.access_token}`,
+        Authorization: `Bearer ${user.access_token}`,
       },
-
-      body: JSON.stringify(
-        assessmentData
-      ),
+      body: JSON.stringify(assessmentData),
     }
   );
 
   const result =
-    await response.json().catch(
-      () => null
-    );
+    await response.json().catch(() => null);
 
-  if (
-    !response.ok ||
-    !result?.success
-  ) {
+  if (!response.ok || !result?.success) {
     throw new Error(
       result?.message ||
-      result?.detail ||
-      "Failed to submit assessment"
+        result?.detail ||
+        "Failed to submit assessment"
     );
   }
 
   return result;
 }
-
 
 // ============================================================
 // GENERATE AI MOCK TEST
@@ -89,32 +84,23 @@ export async function generateMockTest(
     `${API_URL}/api/assessment/mock-test`,
     {
       method: "POST",
-
       headers: {
         "Content-Type": "application/json",
-        "Authorization": `Bearer ${user.access_token}`,
+        Authorization: `Bearer ${user.access_token}`,
       },
-
-      body: JSON.stringify(
-        mockTestData
-      ),
+      body: JSON.stringify(mockTestData),
     }
   );
 
   const result =
-    await response.json().catch(
-      () => null
-    );
+    await response.json().catch(() => null);
 
-  if (
-    !response.ok ||
-    !result?.success
-  ) {
+  if (!response.ok || !result?.success) {
     throw new Error(
       result?.message ||
-      result?.detail ||
-      result?.error ||
-      "Failed to generate AI mock test"
+        result?.detail ||
+        result?.error ||
+        "Failed to generate AI mock test"
     );
   }
 

@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+
 import { generateLearningPlan } from "../services/learningPlanService";
 import { generateRoadmap } from "../services/roadmapService";
 
@@ -7,7 +8,6 @@ function Roadmap() {
   const [roadmap, setRoadmap] = useState(null);
   const [careerGoal, setCareerGoal] = useState("");
   const [experienceLevel, setExperienceLevel] = useState("");
-
   const [loading, setLoading] = useState(true);
   const [generatingRoadmap, setGeneratingRoadmap] = useState(false);
   const [error, setError] = useState("");
@@ -15,7 +15,6 @@ function Roadmap() {
   // Learning Plan states
   const [generatingLearningPlan, setGeneratingLearningPlan] =
     useState(false);
-
   const [learningPlanMessage, setLearningPlanMessage] =
     useState("");
 
@@ -233,15 +232,24 @@ function Roadmap() {
       console.log(
         "Generating NEW AI roadmap with:",
         {
-          career_goal: currentCareerGoal,
+          career_goal:
+            currentCareerGoal,
+
           experience_level:
             currentExperienceLevel,
-          technical_skills: technicalSkills,
-          skill_gaps: skillGaps,
+
+          technical_skills:
+            technicalSkills,
+
+          skill_gaps:
+            skillGaps,
+
           mock_test_score:
             mockTestScore,
+
           mock_test_total:
             mockTestTotal,
+
           mock_test_percentage:
             mockTestPercentage,
         }
@@ -315,17 +323,13 @@ function Roadmap() {
 
       localStorage.setItem(
         "skillbridge_current_roadmap",
-        JSON.stringify(
-          roadmapData
-        )
+        JSON.stringify(roadmapData)
       );
 
       // Also maintain general roadmap storage
       localStorage.setItem(
         "skillbridge_roadmap",
-        JSON.stringify(
-          roadmapData
-        )
+        JSON.stringify(roadmapData)
       );
 
       // ------------------------------------------------------
@@ -353,7 +357,6 @@ function Roadmap() {
       );
 
       setCompletedTopics([]);
-
       setError("");
 
       console.log(
@@ -502,9 +505,7 @@ function Roadmap() {
 
       localStorage.setItem(
         "skillbridge_completed_topics",
-        JSON.stringify(
-          updated
-        )
+        JSON.stringify(updated)
       );
 
       return updated;
@@ -550,7 +551,6 @@ function Roadmap() {
     return (
       <div className="min-h-screen bg-gray-950 text-white flex items-center justify-center px-6">
         <div className="text-center">
-
           <div className="mx-auto mb-6 h-12 w-12 animate-spin rounded-full border-4 border-gray-700 border-t-white" />
 
           <h1 className="text-2xl font-bold">
@@ -560,7 +560,6 @@ function Roadmap() {
           <p className="mt-2 text-gray-400">
             Loading your latest generated roadmap.
           </p>
-
         </div>
       </div>
     );
@@ -573,9 +572,7 @@ function Roadmap() {
   if (error && !roadmap) {
     return (
       <div className="min-h-screen bg-gray-950 text-white flex items-center justify-center px-6">
-
         <div className="max-w-lg text-center">
-
           <h1 className="text-3xl font-bold">
             Unable to Load Roadmap
           </h1>
@@ -585,7 +582,6 @@ function Roadmap() {
           </p>
 
           <div className="mt-6 flex flex-wrap justify-center gap-4">
-
             <Link
               to="/mock-test-result"
               className="rounded-lg bg-white px-6 py-3 font-semibold text-black hover:bg-gray-200"
@@ -599,11 +595,8 @@ function Roadmap() {
             >
               Assessment
             </Link>
-
           </div>
-
         </div>
-
       </div>
     );
   }
@@ -614,13 +607,10 @@ function Roadmap() {
 
   return (
     <div className="min-h-screen bg-gray-950 text-white">
-
       {/* Navbar */}
 
       <nav className="border-b border-gray-800 bg-gray-950">
-
         <div className="mx-auto flex max-w-7xl items-center justify-between px-8 py-4">
-
           <Link
             to="/"
             className="text-2xl font-bold"
@@ -634,19 +624,15 @@ function Roadmap() {
           >
             Dashboard
           </Link>
-
         </div>
-
       </nav>
 
       {/* Main */}
 
       <main className="mx-auto max-w-5xl px-6 py-12">
-
         {/* Header */}
 
         <div>
-
           <p className="text-sm text-gray-400">
             AI Career Roadmap
           </p>
@@ -660,23 +646,19 @@ function Roadmap() {
             based on your assessment, skills, skill gaps,
             and mock test performance.
           </p>
-
         </div>
 
         {/* Experience */}
 
         <div className="mt-6">
-
           <span className="rounded-lg border border-gray-700 bg-gray-900 px-4 py-2 text-sm text-gray-300">
             Experience: {experienceLevel}
           </span>
-
         </div>
 
         {/* Generate New Roadmap */}
 
         <div className="mt-8 rounded-2xl border border-gray-800 bg-gray-900 p-6">
-
           <p className="text-sm text-gray-400">
             Mock Test Based AI Roadmap
           </p>
@@ -699,26 +681,20 @@ function Roadmap() {
 
           <button
             type="button"
-            onClick={
-              handleGenerateRoadmap
-            }
-            disabled={
-              generatingRoadmap
-            }
+            onClick={handleGenerateRoadmap}
+            disabled={generatingRoadmap}
             className="mt-6 rounded-lg bg-white px-6 py-3 font-semibold text-black transition hover:bg-gray-200 disabled:cursor-not-allowed disabled:opacity-50"
           >
             {generatingRoadmap
               ? "Generating New AI Roadmap..."
               : "Generate New AI Roadmap"}
           </button>
-
         </div>
 
         {/* AI Summary */}
 
         {roadmap?.summary && (
           <div className="mt-8 rounded-2xl border border-gray-800 bg-gray-900 p-6">
-
             <p className="text-sm font-semibold text-gray-400">
               AI Roadmap Summary
             </p>
@@ -726,18 +702,14 @@ function Roadmap() {
             <p className="mt-3 leading-7 text-gray-300">
               {roadmap.summary}
             </p>
-
           </div>
         )}
 
         {/* Roadmap Progress */}
 
         <div className="mt-6 rounded-2xl border border-gray-800 bg-gray-900 p-6">
-
           <div className="flex items-center justify-between">
-
             <div>
-
               <h2 className="text-xl font-semibold">
                 Roadmap Progress
               </h2>
@@ -746,32 +718,26 @@ function Roadmap() {
                 {completedCount} of{" "}
                 {totalTopics} topics completed
               </p>
-
             </div>
 
             <span className="text-2xl font-bold">
               {progress}%
             </span>
-
           </div>
 
           <div className="mt-4 h-3 overflow-hidden rounded-full bg-gray-800">
-
             <div
               className="h-full rounded-full bg-white transition-all duration-500"
               style={{
                 width: `${progress}%`,
               }}
             />
-
           </div>
-
         </div>
 
         {/* Learning Path */}
 
         <div className="mt-10">
-
           <h2 className="text-2xl font-bold">
             Learning Path
           </h2>
@@ -780,23 +746,18 @@ function Roadmap() {
             Complete each topic to progress through
             your roadmap.
           </p>
-
         </div>
 
         {/* Phases */}
 
         <div className="mt-6 space-y-6">
-
           {roadmap?.phases?.map(
             (phase) => (
-
               <div
                 key={phase.phase}
                 className="rounded-2xl border border-gray-800 bg-gray-900 p-6"
               >
-
                 <div className="flex items-start gap-5">
-
                   {/* Phase Number */}
 
                   <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-white text-lg font-bold text-black">
@@ -806,13 +767,10 @@ function Roadmap() {
                   {/* Phase Content */}
 
                   <div className="flex-1">
-
                     {/* Phase Header */}
 
                     <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
-
                       <div>
-
                         <p className="text-sm text-gray-500">
                           Phase {phase.phase}
                         </p>
@@ -820,11 +778,9 @@ function Roadmap() {
                         <h3 className="mt-1 text-xl font-semibold">
                           {phase.title}
                         </h3>
-
                       </div>
 
                       <div className="flex flex-wrap gap-2">
-
                         <span className="rounded-full border border-gray-700 px-3 py-1 text-xs text-gray-300">
                           {phase.duration_weeks} weeks
                         </span>
@@ -832,44 +788,36 @@ function Roadmap() {
                         <span className="rounded-full border border-gray-700 px-3 py-1 text-xs text-gray-300">
                           {phase.priority} Priority
                         </span>
-
                       </div>
-
                     </div>
 
                     {/* Skills */}
 
                     <div className="mt-6">
-
                       <h4 className="text-sm font-semibold text-gray-300">
                         Skills & Topics
                       </h4>
 
                       <div className="mt-4 space-y-4">
-
                         {phase.skills?.map(
                           (
                             skillItem,
                             index
                           ) => (
-
                             <div
                               key={`${skillItem.skill}-${index}`}
                               className="rounded-xl border border-gray-800 bg-gray-950 p-4"
                             >
-
                               <h5 className="font-semibold">
                                 {skillItem.skill}
                               </h5>
 
                               <div className="mt-3 flex flex-wrap gap-2">
-
                                 {skillItem.topics?.map(
                                   (
                                     topic,
                                     topicIndex
                                   ) => {
-
                                     const completed =
                                       completedTopics.includes(
                                         topic
@@ -890,34 +838,25 @@ function Roadmap() {
                                             : "border-gray-700 bg-gray-900 text-gray-300 hover:bg-gray-800"
                                         }`}
                                       >
-
                                         {completed
                                           ? "✓ "
                                           : ""}
-
                                         {topic}
-
                                       </button>
                                     );
                                   }
                                 )}
-
                               </div>
-
                             </div>
-
                           )
                         )}
-
                       </div>
-
                     </div>
 
                     {/* Project */}
 
                     {phase.project && (
                       <div className="mt-6 rounded-xl border border-gray-800 bg-gray-950 p-4">
-
                         <p className="text-sm font-semibold text-gray-300">
                           Practical Project
                         </p>
@@ -925,27 +864,20 @@ function Roadmap() {
                         <p className="mt-2 text-gray-400">
                           {phase.project}
                         </p>
-
                       </div>
                     )}
-
                   </div>
-
                 </div>
-
               </div>
-
             )
           )}
-
         </div>
 
         {/* Interview Preparation */}
 
-        {roadmap?.interview_preparation?.length > 0 && (
-
+        {roadmap?.interview_preparation?.length >
+          0 && (
           <div className="mt-10 rounded-2xl border border-gray-800 bg-gray-900 p-6">
-
             <h2 className="text-2xl font-bold">
               Interview Preparation
             </h2>
@@ -956,15 +888,12 @@ function Roadmap() {
             </p>
 
             <div className="mt-5 space-y-3">
-
               {roadmap.interview_preparation.map(
                 (item, index) => (
-
                   <div
                     key={index}
                     className="flex items-start gap-3 rounded-lg border border-gray-800 bg-gray-950 p-4"
                   >
-
                     <span className="mt-0.5 flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-white text-xs font-bold text-black">
                       {index + 1}
                     </span>
@@ -972,24 +901,17 @@ function Roadmap() {
                     <p className="text-gray-300">
                       {item}
                     </p>
-
                   </div>
-
                 )
               )}
-
             </div>
-
           </div>
-
         )}
 
         {/* Learning Plan */}
 
         <div className="mt-10 rounded-2xl border border-gray-800 bg-gray-900 p-6">
-
           <div>
-
             <p className="text-sm text-gray-400">
               Personalized Learning
             </p>
@@ -1002,7 +924,6 @@ function Roadmap() {
               Generate a personalized 7-day study plan
               based on your assessment skill gaps.
             </p>
-
           </div>
 
           {learningPlanMessage && (
@@ -1012,12 +933,9 @@ function Roadmap() {
           )}
 
           <div className="mt-6 flex flex-wrap gap-4">
-
             <button
               type="button"
-              onClick={
-                handleGenerateLearningPlan
-              }
+              onClick={handleGenerateLearningPlan}
               disabled={
                 generatingLearningPlan
               }
@@ -1034,15 +952,12 @@ function Roadmap() {
             >
               View Learning Plan
             </Link>
-
           </div>
-
         </div>
 
         {/* Bottom Buttons */}
 
         <div className="mt-10 flex flex-wrap gap-4">
-
           <Link
             to="/dashboard"
             className="rounded-lg border border-gray-700 px-6 py-3 font-semibold hover:bg-gray-900"
@@ -1056,11 +971,8 @@ function Roadmap() {
           >
             Retake Assessment
           </Link>
-
         </div>
-
       </main>
-
     </div>
   );
 }
