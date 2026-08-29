@@ -1,6 +1,8 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 
+const API_URL = "http://127.0.0.1:8000";
+
 function Register() {
   const navigate = useNavigate();
 
@@ -19,6 +21,21 @@ function Register() {
     setError("");
     setSuccess("");
 
+    if (!fullName.trim()) {
+      setError("Please enter your full name.");
+      return;
+    }
+
+    if (!email.trim()) {
+      setError("Please enter your email.");
+      return;
+    }
+
+    if (!password) {
+      setError("Please enter a password.");
+      return;
+    }
+
     if (password !== confirmPassword) {
       setError("Passwords do not match.");
       return;
@@ -32,26 +49,40 @@ function Register() {
     setLoading(true);
 
     try {
+      console.log(
+        "Sending registration request to:",
+        `${API_URL}/api/auth/register`
+      );
+
       const response = await fetch(
-        "http://127.0.0.1:8000/api/auth/register",
+        `${API_URL}/api/auth/register`,
         {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
           },
           body: JSON.stringify({
-            full_name: fullName,
-            email: email,
-            password: password,
+            full_name: fullName.trim(),
+            email: email.trim(),
+            password,
           }),
         }
       );
 
-      const result = await response.json();
+      const result =
+        await response.json().catch(() => null);
 
-      if (!response.ok || !result.success) {
+      console.log(
+        "Registration response:",
+        result
+      );
+
+      if (!response.ok || !result?.success) {
         setError(
-          result.message || "Unable to create account."
+          result?.message ||
+            result?.detail ||
+            result?.error ||
+            "Unable to create account."
         );
         return;
       }
@@ -63,14 +94,15 @@ function Register() {
       setTimeout(() => {
         navigate("/login");
       }, 1200);
-
     } catch (error) {
-      console.error("Registration error:", error);
-
-      setError(
-        "Unable to connect to server. Make sure the backend is running."
+      console.error(
+        "Registration error:",
+        error
       );
 
+      setError(
+        "Unable to connect to server. Please make sure the backend is running on port 8000."
+      );
     } finally {
       setLoading(false);
     }
@@ -78,11 +110,8 @@ function Register() {
 
   return (
     <div className="min-h-screen bg-gray-950 text-white">
-
       <div className="flex min-h-screen items-center justify-center px-6 py-12">
-
         <div className="w-full max-w-md">
-
           <Link
             to="/"
             className="mb-8 block text-center text-2xl font-bold"
@@ -91,7 +120,6 @@ function Register() {
           </Link>
 
           <div className="rounded-2xl border border-gray-800 bg-gray-900 p-8 shadow-xl">
-
             <h1 className="text-3xl font-bold">
               Create Account
             </h1>
@@ -116,7 +144,6 @@ function Register() {
               onSubmit={handleRegister}
               className="mt-8 space-y-5"
             >
-
               <div>
                 <label className="mb-2 block text-sm font-medium">
                   Full Name
@@ -194,28 +221,20 @@ function Register() {
                   ? "Creating Account..."
                   : "Create Account"}
               </button>
-
             </form>
 
             <p className="mt-6 text-center text-sm text-gray-400">
-
               Already have an account?{" "}
-
               <Link
                 to="/login"
                 className="font-medium text-white hover:underline"
               >
                 Sign In
               </Link>
-
             </p>
-
           </div>
-
         </div>
-
       </div>
-
     </div>
   );
 }
