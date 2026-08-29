@@ -1,7 +1,9 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 
-const API_URL = "http://127.0.0.1:8000";
+const API_URL =
+  import.meta.env.VITE_API_URL ||
+  "http://127.0.0.1:8000";
 
 function Register() {
   const navigate = useNavigate();
@@ -36,13 +38,25 @@ function Register() {
       return;
     }
 
+    if (password.length < 6) {
+      setError(
+        "Password must be at least 6 characters long."
+      );
+      return;
+    }
+
     if (password !== confirmPassword) {
       setError("Passwords do not match.");
       return;
     }
 
-    if (new TextEncoder().encode(password).length > 72) {
-      setError("Password must be 72 bytes or less.");
+    const passwordBytes =
+      new TextEncoder().encode(password).length;
+
+    if (passwordBytes > 72) {
+      setError(
+        "Password must be 72 bytes or less."
+      );
       return;
     }
 
@@ -50,7 +64,7 @@ function Register() {
 
     try {
       console.log(
-        "Sending registration request to:",
+        "Register API:",
         `${API_URL}/api/auth/register`
       );
 
@@ -69,27 +83,32 @@ function Register() {
         }
       );
 
-      const result =
-        await response.json().catch(() => null);
+      const result = await response
+        .json()
+        .catch(() => null);
 
       console.log(
-        "Registration response:",
+        "Register response:",
         result
       );
 
       if (!response.ok || !result?.success) {
-        setError(
+        throw new Error(
           result?.message ||
             result?.detail ||
             result?.error ||
             "Unable to create account."
         );
-        return;
       }
 
       setSuccess(
         "Account created successfully. Redirecting to login..."
       );
+
+      setFullName("");
+      setEmail("");
+      setPassword("");
+      setConfirmPassword("");
 
       setTimeout(() => {
         navigate("/login");
@@ -101,7 +120,8 @@ function Register() {
       );
 
       setError(
-        "Unable to connect to server. Please make sure the backend is running on port 8000."
+        error?.message ||
+          "Unable to connect to server. Please try again."
       );
     } finally {
       setLoading(false);
@@ -109,129 +129,136 @@ function Register() {
   };
 
   return (
-    <div className="min-h-screen bg-gray-950 text-white">
-      <div className="flex min-h-screen items-center justify-center px-6 py-12">
-        <div className="w-full max-w-md">
-          <Link
-            to="/"
-            className="mb-8 block text-center text-2xl font-bold"
-          >
-            SkillBridge AI
-          </Link>
+    <div className="min-h-screen bg-gray-950 px-6 py-10 text-white">
+      <div className="mx-auto flex min-h-[90vh] max-w-md items-center justify-center">
+        <div className="w-full rounded-2xl border border-gray-800 bg-gray-900 p-8 shadow-xl">
 
-          <div className="rounded-2xl border border-gray-800 bg-gray-900 p-8 shadow-xl">
-            <h1 className="text-3xl font-bold">
+          <div className="mb-8 text-center">
+            <Link
+              to="/"
+              className="text-3xl font-bold"
+            >
+              SkillBridge AI
+            </Link>
+
+            <h1 className="mt-6 text-2xl font-bold">
               Create Account
             </h1>
 
-            <p className="mt-2 text-gray-400">
-              Start building your personalized career path.
+            <p className="mt-2 text-sm text-gray-400">
+              Start your personalized AI career journey.
             </p>
+          </div>
 
-            {error && (
-              <div className="mt-6 rounded-lg border border-red-800 bg-red-950 px-4 py-3 text-sm text-red-300">
-                {error}
-              </div>
-            )}
+          {error && (
+            <div className="mb-5 rounded-lg border border-red-800 bg-red-950 px-4 py-3 text-sm text-red-300">
+              {error}
+            </div>
+          )}
 
-            {success && (
-              <div className="mt-6 rounded-lg border border-green-800 bg-green-950 px-4 py-3 text-sm text-green-300">
-                {success}
-              </div>
-            )}
+          {success && (
+            <div className="mb-5 rounded-lg border border-green-800 bg-green-950 px-4 py-3 text-sm text-green-300">
+              {success}
+            </div>
+          )}
 
-            <form
-              onSubmit={handleRegister}
-              className="mt-8 space-y-5"
+          <form
+            onSubmit={handleRegister}
+            className="space-y-5"
+          >
+            <div>
+              <label className="mb-2 block text-sm text-gray-400">
+                Full Name
+              </label>
+
+              <input
+                type="text"
+                value={fullName}
+                onChange={(e) =>
+                  setFullName(e.target.value)
+                }
+                placeholder="Enter your full name"
+                autoComplete="name"
+                required
+                className="w-full rounded-lg border border-gray-700 bg-gray-950 px-4 py-3 text-white outline-none transition placeholder:text-gray-600 focus:border-gray-500"
+              />
+            </div>
+
+            <div>
+              <label className="mb-2 block text-sm text-gray-400">
+                Email
+              </label>
+
+              <input
+                type="email"
+                value={email}
+                onChange={(e) =>
+                  setEmail(e.target.value)
+                }
+                placeholder="Enter your email"
+                autoComplete="email"
+                required
+                className="w-full rounded-lg border border-gray-700 bg-gray-950 px-4 py-3 text-white outline-none transition placeholder:text-gray-600 focus:border-gray-500"
+              />
+            </div>
+
+            <div>
+              <label className="mb-2 block text-sm text-gray-400">
+                Password
+              </label>
+
+              <input
+                type="password"
+                value={password}
+                onChange={(e) =>
+                  setPassword(e.target.value)
+                }
+                placeholder="Create a password"
+                autoComplete="new-password"
+                required
+                className="w-full rounded-lg border border-gray-700 bg-gray-950 px-4 py-3 text-white outline-none transition placeholder:text-gray-600 focus:border-gray-500"
+              />
+            </div>
+
+            <div>
+              <label className="mb-2 block text-sm text-gray-400">
+                Confirm Password
+              </label>
+
+              <input
+                type="password"
+                value={confirmPassword}
+                onChange={(e) =>
+                  setConfirmPassword(
+                    e.target.value
+                  )
+                }
+                placeholder="Confirm your password"
+                autoComplete="new-password"
+                required
+                className="w-full rounded-lg border border-gray-700 bg-gray-950 px-4 py-3 text-white outline-none transition placeholder:text-gray-600 focus:border-gray-500"
+              />
+            </div>
+
+            <button
+              type="submit"
+              disabled={loading}
+              className="w-full rounded-lg bg-white px-5 py-3 font-semibold text-black transition hover:bg-gray-200 disabled:cursor-not-allowed disabled:opacity-50"
             >
-              <div>
-                <label className="mb-2 block text-sm font-medium">
-                  Full Name
-                </label>
+              {loading
+                ? "Creating Account..."
+                : "Create Account"}
+            </button>
+          </form>
 
-                <input
-                  type="text"
-                  value={fullName}
-                  onChange={(e) =>
-                    setFullName(e.target.value)
-                  }
-                  placeholder="Enter your full name"
-                  required
-                  className="w-full rounded-lg border border-gray-700 bg-gray-950 px-4 py-3 text-white outline-none transition focus:border-white"
-                />
-              </div>
-
-              <div>
-                <label className="mb-2 block text-sm font-medium">
-                  Email Address
-                </label>
-
-                <input
-                  type="email"
-                  value={email}
-                  onChange={(e) =>
-                    setEmail(e.target.value)
-                  }
-                  placeholder="you@example.com"
-                  required
-                  className="w-full rounded-lg border border-gray-700 bg-gray-950 px-4 py-3 text-white outline-none transition focus:border-white"
-                />
-              </div>
-
-              <div>
-                <label className="mb-2 block text-sm font-medium">
-                  Password
-                </label>
-
-                <input
-                  type="password"
-                  value={password}
-                  onChange={(e) =>
-                    setPassword(e.target.value)
-                  }
-                  placeholder="Create a password"
-                  required
-                  className="w-full rounded-lg border border-gray-700 bg-gray-950 px-4 py-3 text-white outline-none transition focus:border-white"
-                />
-              </div>
-
-              <div>
-                <label className="mb-2 block text-sm font-medium">
-                  Confirm Password
-                </label>
-
-                <input
-                  type="password"
-                  value={confirmPassword}
-                  onChange={(e) =>
-                    setConfirmPassword(e.target.value)
-                  }
-                  placeholder="Confirm your password"
-                  required
-                  className="w-full rounded-lg border border-gray-700 bg-gray-950 px-4 py-3 text-white outline-none transition focus:border-white"
-                />
-              </div>
-
-              <button
-                type="submit"
-                disabled={loading}
-                className="w-full rounded-lg bg-white py-3 font-semibold text-black transition hover:bg-gray-200 disabled:cursor-not-allowed disabled:opacity-50"
-              >
-                {loading
-                  ? "Creating Account..."
-                  : "Create Account"}
-              </button>
-            </form>
-
-            <p className="mt-6 text-center text-sm text-gray-400">
-              Already have an account?{" "}
-              <Link
-                to="/login"
-                className="font-medium text-white hover:underline"
-              >
-                Sign In
-              </Link>
-            </p>
+          <div className="mt-7 text-center text-sm text-gray-400">
+            Already have an account?{" "}
+            <Link
+              to="/login"
+              className="font-semibold text-white hover:underline"
+            >
+              Login
+            </Link>
           </div>
         </div>
       </div>
