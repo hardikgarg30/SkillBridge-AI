@@ -71,23 +71,30 @@ function Login() {
       );
 
       if (!response.ok || !result?.success) {
-        setError(
+        throw new Error(
           result?.message ||
             result?.detail ||
             result?.error ||
             "Invalid email or password"
         );
-
-        return;
       }
 
       // =====================================================
       // CURRENT LOGGED-IN USER
       // =====================================================
 
-      const newUser = result.data;
+      const newUser = result?.data;
 
-      // Previous logged-in user
+      if (!newUser) {
+        throw new Error(
+          "Login successful, but user data was not returned."
+        );
+      }
+
+      // =====================================================
+      // PREVIOUS LOGGED-IN USER
+      // =====================================================
+
       const oldUserData =
         localStorage.getItem(
           "skillbridge_user"
@@ -97,9 +104,7 @@ function Login() {
 
       if (oldUserData) {
         try {
-          oldUser = JSON.parse(
-            oldUserData
-          );
+          oldUser = JSON.parse(oldUserData);
         } catch {
           oldUser = null;
         }
@@ -109,11 +114,8 @@ function Login() {
       // USER SWITCH DETECTION
       // =====================================================
 
-      const oldUserId =
-        oldUser?.id;
-
-      const newUserId =
-        newUser?.id;
+      const oldUserId = oldUser?.id;
+      const newUserId = newUser?.id;
 
       const isDifferentUser =
         oldUserId &&
@@ -134,7 +136,7 @@ function Login() {
       }
 
       // =====================================================
-      // SAVE NEW LOGGED-IN USER
+      // SAVE NEW USER
       // =====================================================
 
       localStorage.setItem(
@@ -142,11 +144,12 @@ function Login() {
         JSON.stringify(newUser)
       );
 
-      // Save active user ID separately
-      localStorage.setItem(
-        "skillbridge_active_user_id",
-        String(newUserId)
-      );
+      if (newUserId !== undefined && newUserId !== null) {
+        localStorage.setItem(
+          "skillbridge_active_user_id",
+          String(newUserId)
+        );
+      }
 
       // =====================================================
       // GO TO DASHBOARD
@@ -160,7 +163,8 @@ function Login() {
       );
 
       setError(
-        "Unable to connect to server. Make sure the backend is running."
+        error?.message ||
+          "Unable to connect to server. Make sure the backend is running."
       );
     } finally {
       setLoading(false);
@@ -172,6 +176,7 @@ function Login() {
       <div className="flex min-h-screen items-center justify-center px-6 py-12">
         <div className="w-full max-w-md">
 
+          {/* Logo */}
           <Link
             to="/"
             className="mb-8 block text-center text-2xl font-bold"
@@ -179,8 +184,10 @@ function Login() {
             SkillBridge AI
           </Link>
 
+          {/* Card */}
           <div className="rounded-2xl border border-gray-800 bg-gray-900 p-8 shadow-xl">
 
+            {/* Heading */}
             <h1 className="text-3xl font-bold">
               Welcome Back
             </h1>
@@ -189,19 +196,20 @@ function Login() {
               Sign in to continue your career journey.
             </p>
 
+            {/* Error */}
             {error && (
               <div className="mt-6 rounded-lg border border-red-800 bg-red-950 px-4 py-3 text-sm text-red-300">
                 {error}
               </div>
             )}
 
+            {/* Form */}
             <form
               onSubmit={handleLogin}
               className="mt-8 space-y-5"
             >
 
               {/* Email */}
-
               <div>
                 <label className="mb-2 block text-sm font-medium">
                   Email Address
@@ -216,12 +224,11 @@ function Login() {
                   placeholder="you@example.com"
                   autoComplete="email"
                   required
-                  className="w-full rounded-lg border border-gray-700 bg-gray-950 px-4 py-3 text-white outline-none transition focus:border-white"
+                  className="w-full rounded-lg border border-gray-700 bg-gray-950 px-4 py-3 text-white outline-none transition placeholder:text-gray-600 focus:border-white"
                 />
               </div>
 
               {/* Password */}
-
               <div>
                 <label className="mb-2 block text-sm font-medium">
                   Password
@@ -236,12 +243,11 @@ function Login() {
                   placeholder="Enter your password"
                   autoComplete="current-password"
                   required
-                  className="w-full rounded-lg border border-gray-700 bg-gray-950 px-4 py-3 text-white outline-none transition focus:border-white"
+                  className="w-full rounded-lg border border-gray-700 bg-gray-950 px-4 py-3 text-white outline-none transition placeholder:text-gray-600 focus:border-white"
                 />
               </div>
 
               {/* Submit */}
-
               <button
                 type="submit"
                 disabled={loading}
@@ -253,6 +259,7 @@ function Login() {
               </button>
             </form>
 
+            {/* Register */}
             <p className="mt-6 text-center text-sm text-gray-400">
               Don't have an account?{" "}
 
